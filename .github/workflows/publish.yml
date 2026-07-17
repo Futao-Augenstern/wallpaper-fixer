@@ -1,4 +1,4 @@
-name: Publish to GitHub Packages
+name: Build and Publish Python Package
 
 on:
   release:
@@ -9,8 +9,7 @@ jobs:
   build-and-publish:
     runs-on: windows-latest
     permissions:
-      contents: read
-      packages: write
+      contents: write
 
     steps:
       - name: Checkout code
@@ -27,10 +26,9 @@ jobs:
       - name: Build package
         run: python -m build
 
-      - name: Publish to GitHub Packages
-        run: |
-          pip install twine
-          twine upload --repository-url https://upload.pkg.github.com/Futao-Augenstern/ dist/*
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
         env:
-          TWINE_USERNAME: ${{ github.actor }}
-          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
