@@ -1,0 +1,40 @@
+Wallpaper Engine - Diagnostic Information Export
+Version: Wallpaper Engine v2.8.42 (vd 2026-06-29)
+Date: 2026-07-17T00:48:00Z
+OS: Windows 11 专业工作站版 25H2 (Build 26200.1 / 26100.6584)
+GPU: Intel(R) Graphics + NVIDIA GeForce RTX 5060 Laptop GPU
+
+--- Render Log ---
+2026-07-13T15:15:22Z  WPEDesktopDX11Window (2560x1600) init
+2026-07-13T15:15:22Z  DXGI device lost in render loop.
+2026-07-13T15:15:22Z  DXGI begin recovery.
+2026-07-13T15:15:40Z  DXGI failed init: 8876017c at 0.
+2026-07-13T15:16:10Z  DXGI failed init: 8876017c at 0.
+2026-07-13T15:16:55Z  DXGI failed init: 8876017c at 0.
+2026-07-13T15:19:02Z  DXGI finish recovery: 1.
+2026-07-13T15:19:42Z  DXGI device lost in render loop.
+2026-07-13T15:19:43Z  DXGI begin recovery.
+2026-07-13T15:19:47Z  DXGI failed init: 8876017c at 0.
+
+--- Dependency error analysis ---
+deps errors x64:
+deps errors x86:
+  Error module: ColorAdapterClient.dll,  loaded: 0
+  Error module: assimp-vc140-mt32.dll,   loaded: 0
+  Error module: chrome_elf.dll,          loaded: 0
+  Error module: libcef.dll,              loaded: 0
+  Error module: libegl.dll,              loaded: 0
+  Error module: libglesv2.dll,           loaded: 0
+
+--- Shell / Tray ---
+icon create err: -2147467259.
+icon create err: -2147467259.
+icon create err: -2147467259.
+
+--- Web/HTML wallpaper ---
+2026-07-08T10:02:11Z  Uncaught ReferenceError: scene is not defined (line 2, col 0)
+2026-07-08T10:02:11Z  Uncaught TypeError: Cannot read properties of null (reading 'play') (line 7, col 38)
+
+--- UI (CEF) ---
+LocalFileSchemeFactory: CefStreamReader::CreateForFile failed
+JS Exception: Uncaught TypeError: window.updateProfileCallback is not a function

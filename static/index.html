@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wallpaper 修复助手</title>
+  <link rel="stylesheet" href="/style.css" />
+  <!-- 无闪白：在 CSS 应用前先按 localStorage / 系统偏好决定暗色，避免先亮后暗 -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("wf_theme");
+        if (!t) {
+          t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+        }
+        document.documentElement.classList.toggle("theme-dark", t === "dark");
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body id="top">
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="#top" data-i18n-attr="aria-label:brand_aria">
+        <span class="logo" aria-hidden="true">▦</span>
+        <span class="brand-text">
+          <strong data-i18n="brand_name">Wallpaper 修复助手</strong>
+          <small data-i18n="brand_sub">本地诊断 · 系统体检 · 一键修复</small>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-menu" id="navMenu" aria-label="主导航">
+        <a href="#diag" data-i18n="nav_diag">诊断分析</a>
+        <a href="#scan" data-i18n="nav_scan">系统体检</a>
+        <a href="#fix" data-i18n="nav_fix">一键修复</a>
+        <span class="nav-push"></span>
+        <span class="nav-status">
+          <span id="adminBadge" class="badge badge-warn">权限检测中…</span>
+        </span>
+        <span class="topbar-controls">
+          <button id="langToggle" class="ctrl-btn" type="button" aria-label="切换界面语言（中文/English）">EN</button>
+          <button id="themeToggle" class="ctrl-btn" type="button" aria-label="切换到夜间模式">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" />
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+          </button>
+        </span>
+        <button id="scanBtn" class="btn btn-primary" data-i18n="btn_scan">系统体检</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero：核心信息焦点区 -->
+    <section class="hero reveal">
+      <h1 data-i18n="hero_title">让壁纸重新动起来</h1>
+      <p class="hero-sub" data-i18n="hero_sub">本地运行的 Wallpaper Engine 故障排查工具。上传诊断文件、查看本机图形状态、按需执行修复——全程不联网、不上传任何数据。</p>
+      <div class="hero-actions">
+        <a class="pill-link" href="#diag" data-i18n="hero_pill1">① 分析诊断文件</a>
+        <a class="pill-link" href="#scan" data-i18n="hero_pill2">② 实时系统体检</a>
+        <a class="pill-link" href="#fix" data-i18n="hero_pill3">③ 一键修复</a>
+      </div>
+      <div class="hero-note" data-i18n-html="hero_note">提示：需要修复驱动或系统文件时，请右键本应用以<b>管理员身份运行</b>。</div>
+    </section>
+
+    <!-- 诊断文件分析 -->
+    <section class="card reveal" id="diag">
+      <div class="card-head">
+        <h2 data-i18n="card1_title">① 诊断文件分析</h2>
+        <span class="card-tag" data-i18n="tag_diag">诊断</span>
+      </div>
+      <p class="hint" data-i18n="hint_diag">上传 Wallpaper Engine 导出的 <code>info.txt</code>，或将诊断文本粘贴到下方，自动识别 DXGI 崩溃 / 依赖缺失 / 托盘错误等问题。</p>
+      <div class="row">
+        <label class="filebox" tabindex="0" role="button" data-i18n-attr="aria-label:filebox_aria">
+          <input type="file" id="fileInput" accept=".txt,.log,.md,text/plain" data-i18n-attr="aria-label:file_aria" />
+          <span data-i18n="file_choose">选择 info.txt</span>
+        </label>
+        <button id="parseBtn" class="btn btn-primary" data-i18n="btn_parse">解析诊断文件</button>
+        <button id="loadSampleBtn" class="btn btn-ghost" data-i18n="btn_sample">载入示例</button>
+      </div>
+      <textarea id="diagText" data-i18n-attr="placeholder:ph_diag" aria-label="诊断文本输入框"></textarea>
+      <div id="parseResult"></div>
+    </section>
+
+    <!-- 系统体检 -->
+    <section class="card reveal" id="scan">
+      <div class="card-head">
+        <h2 data-i18n="card2_title">② 实时系统体检</h2>
+        <span class="card-tag" data-i18n="tag_scan">体检</span>
+      </div>
+      <p class="hint" data-i18n="hint_scan">读取本机真实状态：显卡与驱动、双显卡、HAGS 开关、运行进程、冲突软件、事件日志中的显示错误。</p>
+      <div id="systemResult" class="placeholder" data-i18n="scan_placeholder">点击右上角“系统体检”或下方按钮开始。</div>
+      <button id="scanBtn2" class="btn btn-primary" data-i18n="btn_scan2">开始系统体检</button>
+    </section>
+
+    <!-- 一键修复 -->
+    <section class="card reveal" id="fix">
+      <div class="card-head">
+        <h2 data-i18n="card3_title">③ 一键修复</h2>
+        <span class="card-tag" data-i18n="tag_fix">修复</span>
+      </div>
+      <p class="hint" data-i18n="hint_fix">以下动作均会二次确认；涉及驱动/系统文件的动作需要管理员权限。耗时操作在后台执行并实时显示日志。</p>
+      <div id="fixList" class="placeholder" data-i18n="loading">加载中…</div>
+    </section>
+  </main>
+
+  <!-- 确认弹窗 -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc" class="modal-desc"></p>
+      <div id="modalRisk" class="risk"></div>
+      <div class="modal-actions">
+        <button id="modalCancel" class="btn btn-ghost" data-i18n="btn_cancel">取消</button>
+        <button id="modalOk" class="btn btn-danger" data-i18n="btn_confirm">确认执行</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 后台任务日志弹窗 -->
+  <div id="logModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="logTitle">
+    <div class="modal-box wide">
+      <h3 id="logTitle" data-i18n="log_title">后台任务</h3>
+      <pre id="logBody" class="log"></pre>
+      <div class="modal-actions">
+        <button id="logClose" class="btn btn-ghost" data-i18n="btn_close">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot" data-i18n="footer_text">本工具在本地运行，不收集任何数据。修复前建议先阅读每项说明。</footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
