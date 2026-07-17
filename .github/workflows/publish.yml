@@ -30,7 +30,7 @@ jobs:
       - name: Publish to GitHub Packages
         run: |
           pip install twine
-          twine upload --repository-url https://upload.pkg.github.com/Futao-Augenstern/wallpaper-fixer dist/*
+          twine upload --repository-url https://upload.pkg.github.com/Futao-Augenstern/ dist/*
         env:
           TWINE_USERNAME: ${{ github.actor }}
           TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
