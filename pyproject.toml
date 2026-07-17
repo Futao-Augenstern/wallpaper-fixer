@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "wallpaper-fixer"
+version = "1.0.0"
+description = "Wallpaper Engine 修复工具 —— 本地诊断 + 系统体检 + 一键修复"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Futao-Augenstern"},
+]
+requires-python = ">=3.10"
+keywords = ["wallpaper-engine", "windows", "troubleshooting", "tool"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "flask>=3.0",
+    "waitress>=2.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/Futao-Augenstern/wallpaper-fixer"
+Repository = "https://github.com/Futao-Augenstern/wallpaper-fixer.git"
+Issues = "https://github.com/Futao-Augenstern/wallpaper-fixer/issues"
+
+[tool.setuptools.packages.find]
+include = ["lib*"]
+
+[tool.setuptools.package-data]
+lib = ["*.py"]
